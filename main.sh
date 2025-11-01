@@ -10,6 +10,7 @@ if [ -z "${1-}" ]; then
     printf '%s' "$decrypted"
 else
     printf '%s\n%s' "$decrypted" "$1" | gpg --quiet --symmetric --cipher-algo AES256 --batch --passphrase-file passphrase --pinentry-mode loopback -o - | base64 > encrypted.new && mv encrypted.new encrypted
+    git add encrypted
     git commit -am "Updated secret"
     git push --quiet
 fi
